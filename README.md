@@ -8,6 +8,8 @@ To start a local development server, run:
 
 ```bash
 ng serve
+
+npx json-server@0.17.4 --watch db.json --port 3000
 ```
 
 
