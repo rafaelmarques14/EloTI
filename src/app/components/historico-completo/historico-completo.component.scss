@@ -1,9 +1,23 @@
+
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 20px;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
+}
+
+.header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #0f172a;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.btn-novo {
+  border-radius: 8px;
+  font-weight: 500;
+  padding: 0 20px;
 }
 
 
@@ -13,10 +27,11 @@
   gap: 16px;
   align-items: center;
   margin-bottom: 24px;
-  background-color: #f9f9f9;
-  padding: 16px;
-  border-radius: 8px;
-  border: 1px solid #eeeeee;
+  background-color: #ffffff;
+  padding: 20px 24px;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
 }
 
 .filter-bar mat-form-field {
@@ -24,27 +39,97 @@
   --mdc-outlined-text-field-container-height: 48px;
 }
 
-
 :host ::ng-deep .filter-bar .mat-mdc-form-field-subscript-wrapper {
   display: none;
 }
 
+:host ::ng-deep .filter-bar .mat-mdc-text-field-wrapper {
+  background-color: #f8fafc;
+  border-radius: 8px;
+}
+
 .filter-type-select {
   flex-grow: 0;
-  flex-basis: 150px; /* Largura fixa para este campo */
+  flex-basis: 140px;
 }
 
-.filter-bar button {
-  margin-left: auto; /* Empurra o botão para a extremidade direita */
+.filter-bar button.btn-limpar {
+  margin-left: auto; 
   height: 48px;
+  border-radius: 8px;
+  color: #64748b;
+  border-color: #cbd5e1;
 }
+
 
 .table-container {
-  border-radius: 8px;
+  background-color: #ffffff;
+  border-radius: 12px;
   overflow: hidden;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
 }
 
-th.mat-header-cell {
-  font-weight: bold;
+
+table {
+  width: 100%;
 }
 
+th.mat-mdc-header-cell {
+  background-color: #f8fafc;
+  color: #0f172a;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 16px 24px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+td.mat-mdc-cell {
+  padding: 16px 24px;
+  color: #334155;
+  border-bottom: 1px solid #f8fafc;
+  vertical-align: middle;
+}
+
+.item-title {
+  font-size: 0.95rem;
+  color: #0f172a;
+  font-weight: 600;
+}
+
+.item-subtitle {
+  font-weight: 500;
+  color: #334155;
+}
+
+.text-muted {
+  color: #64748b;
+  font-size: 0.9rem;
+}
+
+.hover-row:hover {
+  background-color: #f8fafc;
+  transition: background-color 0.2s ease;
+}
+
+
+.status-text-only {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+
+}
+
+.status-text-only mat-icon {
+  font-size: 18px;
+  height: 18px;
+  width: 18px;
+}
+
+
+th.mat-column-dataFim, 
+td.mat-column-dataFim {
+  text-align: center;
+}
