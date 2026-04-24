@@ -1,33 +1,47 @@
 <div class="dashboard-container">
   <div class="summary-cards">
-    <mat-card>
-      <mat-card-header>
-        <mat-card-title>{{ totalItens }}</mat-card-title>
-        <mat-card-subtitle>Total de Itens</mat-card-subtitle>
-      </mat-card-header>
-      <mat-icon class="card-icon">inventory_2</mat-icon>
+    <mat-card class="card-modern card-total">
+      <div class="card-content">
+        <div class="card-info">
+          <span class="card-title">Total de Itens</span>
+          <span class="card-value">{{ totalItens }}</span>
+        </div>
+        <mat-icon class="card-bg-icon">inventory_2</mat-icon>
+      </div>
     </mat-card>
-    <mat-card class="card-livre">
-      <mat-card-header>
-        <mat-card-title>{{ totalLivre }}</mat-card-title>
-        <mat-card-subtitle>Disponíveis</mat-card-subtitle>
-      </mat-card-header>
-      <mat-icon class="card-icon">check_circle</mat-icon>
+
+    <mat-card class="card-modern card-livre">
+      <div class="card-content">
+        <div class="card-info">
+          <span class="card-title">Disponíveis</span>
+          <span class="card-value">{{ totalLivre }}</span>
+        </div>
+        <mat-icon class="card-bg-icon">check_circle</mat-icon>
+      </div>
     </mat-card>
-    <mat-card class="card-em-uso">
-      <mat-card-header>
-        <mat-card-title>{{ totalEmUso }}</mat-card-title>
-        <mat-card-subtitle>Em Uso</mat-card-subtitle>
-      </mat-card-header>
-      <mat-icon class="card-icon">person_pin</mat-icon>
+
+    <mat-card class="card-modern card-em-uso">
+      <div class="card-content">
+        <div class="card-info">
+          <span class="card-title">Em Uso</span>
+          <span class="card-value">{{ totalEmUso }}</span>
+        </div>
+        <mat-icon class="card-bg-icon">person</mat-icon>
+      </div>
     </mat-card>
-    <mat-card class="card-manutencao">
-      <mat-card-header>
-        <mat-card-title>{{ totalManutencao }}</mat-card-title>
-        <mat-card-subtitle>Em Manutenção</mat-card-subtitle>
-      </mat-card-header>
-      <mat-icon class="card-icon">build</mat-icon>
+
+    <mat-card class="card-modern card-manutencao">
+      <div class="card-content">
+        <div class="card-info">
+          <span class="card-title">Em Manutenção</span>
+          <span class="card-value">{{ totalManutencao }}</span>
+        </div>
+        <mat-icon class="card-bg-icon">build</mat-icon>
+      </div>
     </mat-card>
   </div>
-  <app-activity-feed></app-activity-feed>
+
+  <div class="main-content-full">
+      <app-activity-feed></app-activity-feed>
+  </div>
 </div>
