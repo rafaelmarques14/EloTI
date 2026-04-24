@@ -1,28 +1,39 @@
-<mat-toolbar color="primary" class="main-toolbar">
-  <div class="toolbar-brand">
-    <img src="../../../assets/Elo_TI.png" alt="Elo TI" class="toolbar-logo-image">
-  </div>
+<mat-sidenav-container class="admin-container">
+  
+  <mat-sidenav mode="side" opened class="sidebar">
+    <div class="sidebar-wrapper">
+      
+      <div class="sidebar-top">
+        <div class="logo-container">
+          <img src="../../../assets/Elo_TI.png" alt="Elo TI" class="logo">
+        </div>
 
-  <span class="toolbar-spacer"></span>
+        <mat-nav-list class="nav-menu">
+          <a mat-list-item *ngFor="let link of navLinks"
+             [routerLink]="link.path"
+             routerLinkActive="active-link">
+            <mat-icon matListItemIcon>{{link.icon}}</mat-icon>
+            <div matListItemTitle>{{link.label}}</div>
+          </a>
+        </mat-nav-list>
+      </div>
 
-  <button mat-button (click)="logout()" title="Sair" class="logout-button">
-    <mat-icon>logout</mat-icon>
-    <span>Sair</span>
-  </button>
-</mat-toolbar>
+      <div class="sidebar-bottom">
+        <mat-divider></mat-divider> <mat-nav-list class="nav-menu">
+          <a mat-list-item (click)="logout()" class="logout-link">
+            <mat-icon matListItemIcon>logout</mat-icon>
+            <div matListItemTitle>Sair</div>
+          </a>
+        </mat-nav-list>
+      </div>
 
-<div class="container">
-  <nav mat-tab-nav-bar [tabPanel]="tabPanel">
-    <a mat-tab-link *ngFor="let link of navLinks"
-       [routerLink]="link.path"
-       routerLinkActive #rla="routerLinkActive"
-       [active]="rla.isActive">
-       <mat-icon class="tab-icon">{{link.icon}}</mat-icon>
-      {{link.label}}
-    </a>
-  </nav>
-  <mat-tab-nav-panel #tabPanel>
-    <router-outlet></router-outlet>
-  </mat-tab-nav-panel>
-</div>
+    </div>
+  </mat-sidenav>
 
+  <mat-sidenav-content class="main-content">
+    <main class="page-content">
+      <router-outlet></router-outlet>
+    </main>
+  </mat-sidenav-content>
+
+</mat-sidenav-container>
