@@ -1,33 +1,117 @@
-.main-toolbar {
+
+.admin-container {
+  height: 100vh;
+  background-color: #f8fafc; 
+}
+
+.sidebar {
+  width: 260px;
+  background-color: #ffffff; 
+  border-right: 1px solid #e2e8f0;
+}
+
+.logo-container {
+  padding: 24px;
   display: flex;
+  justify-content: center;
   align-items: center;
+  border-bottom: 1px solid #f1f5f9;
+  margin-bottom: 16px;
 }
 
-.toolbar-brand {
-  display: flex;
-  align-items: center;
-  gap: 16px; 
+.logo {
+  max-width: 140px;
+  height: auto;
 }
 
-.toolbar-logo-image {
-  max-height: 55px; 
-  width: auto;
+.nav-menu {
+  padding: 0 12px;
 }
 
-.toolbar-title {
-  font-size: 1.1rem;
+.nav-menu a {
+  border-radius: 8px;
+  margin-bottom: 8px;
+  color: #64748b;
+  transition: all 0.2s ease;
+}
+
+.nav-menu mat-icon {
+  color: #64748b;
+}
+
+
+.nav-menu a:hover {
+  background-color: #f8fafc;
+  color: #0f172a;
+}
+
+.nav-menu a:hover mat-icon {
+  color: #0f172a;
+}
+
+
+.active-link {
+  background-color: #e0f2fe !important; 
+  color: #0369a1 !important; 
+  font-weight: 600;
+}
+
+.active-link mat-icon {
+  color: #0369a1 !important;
+}
+
+.topbar {
+  background-color: transparent;
+  padding: 0 32px;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.btn-sair {
+  color: #64748b;
   font-weight: 500;
 }
 
-.toolbar-spacer {
-  flex: 1 1 auto; 
+.page-content {
+  padding: 0 32px 32px 32px;
+  box-sizing: border-box;
 }
 
-.container {
-  padding: 24px;
+
+.sidebar-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: space-between; 
 }
 
-.tab-icon {
-  margin-right: 8px;
+.sidebar-bottom {
+  padding-bottom: 24px; 
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
 }
 
+
+.logout-link {
+  color: #ef4444 !important; 
+  margin-top: 8px;
+}
+
+.logout-link mat-icon {
+  color: #ef4444 !important;
+}
+
+.logout-link:hover {
+  background-color: #fef2f2 !important; 
+  color: #dc2626 !important;
+}
+
+.page-content {
+  padding: 40px 32px 32px 32px; 
+  box-sizing: border-box;
+  background-color: #f8fafc;
+  min-height: 100vh;
+}
