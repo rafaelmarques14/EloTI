@@ -1,43 +1,8 @@
 .dashboard-container {
-  display: grid;
-  grid-template-columns: 1fr;
+  display: flex;
+  flex-direction: column;
   gap: 24px;
-  margin-top: 24px;
-}
-
-mat-card {
-  position: relative;
-  overflow: hidden;
-  border-radius: 12px;
-}
-
-.card-icon {
-  position: absolute;
-  right: 20px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 48px;
-  width: 48px;
-  height: 48px;
-  color: rgba(0, 0, 0, 0.15);
-}
-
-.card-livre {
-  background-color: #e8f5e9;
-}
-
-.card-em-uso {
-  background-color: #e3f2fd;
-}
-
-.card-manutencao {
-  background-color: #fff3e0;
-}
-
-.dashboard-grid {
-  display: grid;
-  grid-template-columns: repeat(1, 1fr);
-  gap: 24px;
+  margin-top: 16px;
 }
 
 .summary-cards {
@@ -46,48 +11,67 @@ mat-card {
   gap: 20px;
 }
 
-@media (min-width: 1024px) {
-  .dashboard-grid {
-    grid-template-columns: 2fr 1fr;
-  }
-}
-
-.dashboard-container {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 24px;
-}
-
-.summary-cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 20px;
-}
-
-mat-card {
+.card-modern {
+  border-radius: 12px !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+  border: none !important;
   position: relative;
   overflow: hidden;
+  padding: 20px;
+  color: white;
 }
 
-.card-icon {
+.card-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  position: relative;
+  z-index: 2;
+}
+
+.card-info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.card-title {
+  font-size: 1.1rem;
+  font-weight: 500;
+  opacity: 0.9;
+}
+
+.card-value {
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+
+.card-bg-icon {
   position: absolute;
-  right: 20px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 48px;
-  width: 48px;
-  height: 48px;
-  color: rgba(0, 0, 0, 0.15);
+  right: -20px;
+  bottom: -30px;
+  font-size: 110px;
+  width: 110px;
+  height: 110px;
+  opacity: 0.15;
+  z-index: 1;
 }
 
-.card-livre {
-  background-color: #a4f6ab;
+.card-total { background-color: #374151; } 
+.card-livre { background-color: #4ade80; } 
+.card-em-uso { background-color: #3b82f6; }
+.card-manutencao { 
+  background-color: #fde68a; 
+  color: #1e293b; 
+}
+.card-manutencao .card-bg-icon {
+  color: #d97706; 
 }
 
-.card-em-uso {
-  background-color: #a5d6f9;
-}
 
-.card-manutencao {
-  background-color: #edd2a7;
+.main-content-full {
+  width: 100%;
+  margin-top: 10px;
 }
