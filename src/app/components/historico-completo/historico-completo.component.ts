@@ -10,10 +10,11 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatDatepicker, MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { provideNativeDateAdapter } from '@angular/material/core';
-import { forkJoin, map, Subject, takeUntil, startWith } from 'rxjs';
+import { forkJoin, map, Subject, BehaviorSubject, takeUntil, startWith } from 'rxjs';
 import { DataService } from '../../services/data.service';
 import { Funcionario } from '../../models/funcionario.model';
 import { Historico, HistoricoFormatado } from '../../models/historico.model';
+
 
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
@@ -34,7 +35,7 @@ export class HistoricoCompletoComponent implements OnInit, OnDestroy {
   
   funcionarios: Funcionario[] = [];
   private historicoCompleto: HistoricoFormatado[] = [];
-  historicoFiltrado$ = new Subject<HistoricoFormatado[]>();
+  historicoFiltrado$ = new BehaviorSubject<HistoricoFormatado[]>([]);
   
   filterForm!: FormGroup;
   private destroy$ = new Subject<void>();
@@ -161,7 +162,11 @@ export class HistoricoCompletoComponent implements OnInit, OnDestroy {
   }
 
   limparFiltros(): void {
-    this.filterForm.reset({ filterType: 'day' });
+    this.filterForm.reset({ 
+      filterType: 'day', 
+      funcionarioId: null, 
+      data: null 
+    });
   }
 
   gerarPDF(): void {
