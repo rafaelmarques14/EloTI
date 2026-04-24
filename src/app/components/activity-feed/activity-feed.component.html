@@ -1,17 +1,24 @@
 <div class="activity-card">
   <h3>Últimas Atividades</h3>
 
-  <mat-list *ngIf="atividades$ | async as atividades; else loading">
+  <ng-container *ngIf="atividades$ | async as atividades; else loading">
+    <div class="activity-list" *ngIf="atividades.length > 0; else noActivities">
+      
+      <div class="activity-item" *ngFor="let atividade of atividades">
+        
+        <div class="activity-content">
+          <p class="activity-title">{{ atividade.texto }}</p>
+          <span class="activity-date">{{ atividade.data | date:'dd/MM/yyyy HH:mm' }}</span>
+        </div>
+        
+        <div class="activity-action">
+          <mat-icon>{{ atividade.icone }}</mat-icon>
+        </div>
 
-    <ng-container *ngIf="atividades.length > 0; else noActivities">
-      <mat-list-item *ngFor="let atividade of atividades">
-        <mat-icon matListItemIcon>{{ atividade.icone }}</mat-icon>
-        <div matListItemTitle>{{ atividade.texto }}</div>
-        <div matListItemLine>{{ atividade.data | date:'dd/MM/yyyy HH:mm' }}</div>
-      </mat-list-item>
-    </ng-container>
+      </div>
 
-  </mat-list>
+    </div>
+  </ng-container>
 
   <ng-template #loading>
     <p class="placeholder">A carregar atividades...</p>
