@@ -9,7 +9,7 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { ItemListComponent } from './components/item-list/item-list.component';
 import { FuncionarioListComponent } from './components/funcionario-list/funcionario-list.component';
 import { HistoricoCompletoComponent } from './components/historico-completo/historico-completo.component';
-
+import { CadastroComponent } from './components/cadastro/cadastro.component';
 
 const authGuard = () => {
   const authService = inject(AuthService);
@@ -24,6 +24,11 @@ export const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent 
+  },
+
+  { 
+    path: 'cadastro', 
+    component: CadastroComponent 
   },
   {
     path: 'app',
@@ -41,4 +46,3 @@ export const routes: Routes = [
   { path: '', redirectTo: '/app', pathMatch: 'full' },
   { path: '**', redirectTo: '/app' }
 ];
-
