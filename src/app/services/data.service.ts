@@ -18,27 +18,44 @@ export class DataService {
     this.loadFromLocalStorage();
   }
 
+  private getKey(baseKey: string): string {
+
+    const currentUser = localStorage.getItem('currentUser') || 'admin';
+    return `${baseKey}_${currentUser}`;
+  }
 
   private loadFromLocalStorage(): void {
-    const savedItens = localStorage.getItem('db_itens');
-    const savedFuncionarios = localStorage.getItem('db_funcionarios');
-    const savedHistorico = localStorage.getItem('db_historico');
+
+    const savedItens = localStorage.getItem(this.getKey('db_itens'));
+    const savedFuncionarios = localStorage.getItem(this.getKey('db_funcionarios'));
+    const savedHistorico = localStorage.getItem(this.getKey('db_historico'));
+    const currentUser = localStorage.getItem('currentUser') || 'admin';
 
     if (savedItens && savedFuncionarios && savedHistorico) {
       this.itensData = JSON.parse(savedItens);
       this.funcionariosData = JSON.parse(savedFuncionarios);
       this.historicoData = JSON.parse(savedHistorico);
     } else {
-      this.seedInitialData();
+
+      if (currentUser === 'admin') {
+
+        this.seedInitialData();
+      } else {
+
+        this.itensData = [];
+        this.funcionariosData = [];
+        this.historicoData = [];
+        this.saveToLocalStorage();
+      }
     }
 
     this.itens$.next([...this.itensData]);
   }
 
   private saveToLocalStorage(): void {
-    localStorage.setItem('db_itens', JSON.stringify(this.itensData));
-    localStorage.setItem('db_funcionarios', JSON.stringify(this.funcionariosData));
-    localStorage.setItem('db_historico', JSON.stringify(this.historicoData));
+    localStorage.setItem(this.getKey('db_itens'), JSON.stringify(this.itensData));
+    localStorage.setItem(this.getKey('db_funcionarios'), JSON.stringify(this.funcionariosData));
+    localStorage.setItem(this.getKey('db_historico'), JSON.stringify(this.historicoData));
     
     this.itens$.next([...this.itensData]);
   }
@@ -48,25 +65,31 @@ export class DataService {
   }
 
   getItensState(): Observable<Item[]> {
+
+    this.loadFromLocalStorage(); 
     return this.itens$.asObservable();
   }
 
   fetchAndNotifyItens(): Observable<Item[]> {
+    this.loadFromLocalStorage();
     this.itens$.next([...this.itensData]);
     return of([...this.itensData]);
   }
 
   getHistoricoRecente(): Observable<Historico[]> {
+    this.loadFromLocalStorage();
     const ordenado = [...this.historicoData].sort((a, b) => new Date(b.dataInicio).getTime() - new Date(a.dataInicio).getTime());
     return of(ordenado.slice(0, 30));
   }
 
   getHistoricoCompleto(): Observable<Historico[]> {
+    this.loadFromLocalStorage();
     const ordenado = [...this.historicoData].sort((a, b) => new Date(b.dataInicio).getTime() - new Date(a.dataInicio).getTime());
     return of(ordenado);
   }
 
   getFuncionarios(): Observable<Funcionario[]> {
+    this.loadFromLocalStorage();
     return of([...this.funcionariosData]);
   }
 
