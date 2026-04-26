@@ -1,9 +1,24 @@
 <div class="header">
   <h2>Gestão de Funcionários</h2>
-  <button mat-flat-button color="primary" class="btn-novo" (click)="openDialog()">
-    <mat-icon>add</mat-icon>
-    Novo Funcionário
-  </button>
+  <div class="button-group">
+    
+    <input type="file" #fileInput (change)="importarExcel($event)" accept=".xlsx, .xls" style="display: none;">
+
+    <button mat-stroked-button color="accent" class="btn-exportar" (click)="fileInput.click()" style="margin-right: 8px; border-radius: 8px;">
+      <mat-icon>upload</mat-icon>
+      Importar Planilha
+    </button>
+
+    <button mat-stroked-button color="accent" class="btn-exportar" (click)="exportarExcel()" style="margin-right: 8px; border-radius: 8px;">
+      <mat-icon>download</mat-icon>
+      Exportar Planilha
+    </button>
+
+    <button mat-flat-button color="primary" class="btn-novo" (click)="openDialog()">
+      <mat-icon>add</mat-icon>
+      Novo Funcionário
+    </button>
+  </div>
 </div>
 
 <div class="table-container">
