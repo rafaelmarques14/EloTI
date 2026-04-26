@@ -19,13 +19,11 @@ export class DataService {
   }
 
   private getKey(baseKey: string): string {
-
     const currentUser = localStorage.getItem('currentUser') || 'admin';
     return `${baseKey}_${currentUser}`;
   }
 
   private loadFromLocalStorage(): void {
-
     const savedItens = localStorage.getItem(this.getKey('db_itens'));
     const savedFuncionarios = localStorage.getItem(this.getKey('db_funcionarios'));
     const savedHistorico = localStorage.getItem(this.getKey('db_historico'));
@@ -36,12 +34,9 @@ export class DataService {
       this.funcionariosData = JSON.parse(savedFuncionarios);
       this.historicoData = JSON.parse(savedHistorico);
     } else {
-
       if (currentUser === 'admin') {
-
         this.seedInitialData();
       } else {
-
         this.itensData = [];
         this.funcionariosData = [];
         this.historicoData = [];
@@ -65,7 +60,6 @@ export class DataService {
   }
 
   getItensState(): Observable<Item[]> {
-
     this.loadFromLocalStorage(); 
     return this.itens$.asObservable();
   }
@@ -140,9 +134,32 @@ export class DataService {
   }
 
   addItem(item: Omit<Item, 'id'>): Observable<Item> {
-    const novoItem = { ...item, id: this.generateId(this.itensData) } as Item;
+    const novoItemId = this.generateId(this.itensData);
+    let novoHistoricoId: number | null = null;
+
+    if (item.funcionarioId && item.status === 'Em uso') {
+      novoHistoricoId = this.generateId(this.historicoData);
+      
+      const novoHistorico: Historico = {
+        id: novoHistoricoId,
+        itemId: novoItemId,
+        funcionarioId: item.funcionarioId,
+        dataInicio: new Date().toISOString(),
+        dataFim: null
+      };
+      
+      this.historicoData.push(novoHistorico);
+    }
+
+    const novoItem = { 
+      ...item, 
+      id: novoItemId,
+      historicoIdAtivo: novoHistoricoId 
+    } as Item;
+
     this.itensData.push(novoItem);
     this.saveToLocalStorage();
+    
     return of(novoItem);
   }
 
