@@ -1,9 +1,24 @@
 <div class="header">
   <h2>Gestão de Itens</h2>
-  <button mat-flat-button color="primary" class="btn-novo" (click)="openItemDialog()">
-    <mat-icon>add</mat-icon>
-    Novo Item
-  </button>
+  <div class="button-group">
+    
+    <input type="file" #fileInput (change)="importarExcel($event)" accept=".xlsx, .xls" style="display: none;">
+
+    <button mat-stroked-button color="accent" class="btn-exportar" (click)="fileInput.click()" style="margin-right: 8px; border-radius: 8px;">
+      <mat-icon>upload</mat-icon>
+      Importar Planilha
+    </button>
+
+    <button mat-stroked-button color="accent" class="btn-exportar" (click)="exportarExcel()" style="margin-right: 8px; border-radius: 8px;">
+      <mat-icon>download</mat-icon>
+      Exportar Planilha
+    </button>
+
+    <button mat-flat-button color="primary" class="btn-novo" (click)="openItemDialog()">
+      <mat-icon>add</mat-icon>
+      Novo Item
+    </button>
+  </div>
 </div>
 
 <div class="table-container">
@@ -44,13 +59,21 @@
       <td mat-cell *matCellDef="let item" class="assign-cell">
         
         <mat-form-field *ngIf="item.status === 'Livre'" appearance="outline" class="assign-select">
-          <mat-select placeholder="Atribuir para..." (selectionChange)="onFuncionarioSelect(item, $event.value)">
-            <mat-option *ngFor="let func of funcionarios" [value]="func.id">
+          <input type="text"
+                 matInput
+                 placeholder="Buscar funcionário..."
+                 [matAutocomplete]="auto"
+                 (focus)="resetarFiltro()"
+                 (input)="filtrarFuncionarios($event)">
+                 
+          <mat-autocomplete #auto="matAutocomplete"
+                            [displayWith]="displayFuncionario.bind(this)"
+                            (optionSelected)="onFuncionarioSelect(item, $event.option.value)">
+            <mat-option *ngFor="let func of funcionariosFiltrados" [value]="func.id">
               {{ func.nome }}
             </mat-option>
-          </mat-select>
+          </mat-autocomplete>
         </mat-form-field>
-
         <span *ngIf="item.status === 'Em uso'" class="assigned-name">
           {{ getFuncionarioNome(item.funcionarioId) }}
         </span>
