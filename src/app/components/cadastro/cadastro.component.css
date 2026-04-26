@@ -1,1 +1,96 @@
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh; 
+  padding: 20px;
+  background-color: #f0f2f5;
+}
 
+.login-card {
+  width: 100%;
+  max-width: 400px;
+  height: auto !important; 
+}
+
+.login-header {
+  text-align: center;
+  display: block;
+  padding-bottom: 16px;
+}
+
+.login-footer {
+  padding: 1rem 2rem;
+  border-top: 1px solid #e5e7eb;
+  margin-top: 1rem;
+}
+
+.footer-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #6b7280;
+  font-size: 0.875rem;
+  gap: 0.25rem;
+}
+
+.developer {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-style: normal;
+}
+
+.logo {
+  font-family: 'Oswald', sans-serif;
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #1e3a8a;
+  margin-bottom: 1rem;
+}
+
+.logo-image {
+  max-width: 280px;
+  max-height: 520px; 
+  display: block;
+  margin: 0 auto;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 4px; 
+}
+
+button {
+  height: 48px;
+  margin-bottom: 8px; 
+}
+
+.error-message {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #b91c1c;
+  background-color: #fee2e2;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  
+  /* Margens de segurança para empurrar o layout */
+  margin-top: 5px !important;
+  margin-bottom: 20px !important; 
+  
+  /* Garante que ela seja tratada como um bloco sólido no fluxo */
+  position: relative; 
+  z-index: 1;
+}
+mat-form-field {
+  width: 100%;
+  margin-bottom: 12px !important;
+}
+
+::ng-deep .mat-mdc-form-field-subscript-wrapper {
+  display: none !important;
+}
