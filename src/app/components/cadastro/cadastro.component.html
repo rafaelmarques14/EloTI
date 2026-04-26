@@ -1,1 +1,55 @@
+<div class="login-container">
+  <mat-card class="login-card">
+    <mat-card-header class="login-header">
+      <div class="logo">
+        <img src="../../../assets/Elo_TI.png" alt="Elo TI" class="logo-image">
+      </div>
+      <h3 style="text-align: center; color: #1e3a8a; margin-top: -10px;">Criar nova conta</h3>
+    </mat-card-header>
+    
+    <mat-card-content>
+      <form [formGroup]="cadastroForm" (ngSubmit)="onSubmit()">
+        <mat-form-field appearance="outline">
+          <mat-label>Novo Usuário</mat-label>
+          <input matInput formControlName="user" type="text" required>
+        </mat-form-field>
 
+        <mat-form-field appearance="outline">
+          <mat-label>Senha</mat-label>
+          <input matInput formControlName="password" [type]="hidePassword ? 'password' : 'text'" required>
+          <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" type="button">
+            <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Confirmar Senha</mat-label>
+          <input matInput formControlName="confirmPassword" [type]="hideConfirmPassword ? 'password' : 'text'" required>
+          <button mat-icon-button matSuffix (click)="hideConfirmPassword = !hideConfirmPassword" type="button">
+            <mat-icon>{{hideConfirmPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
+        </mat-form-field>
+
+        <div *ngIf="cadastroError" class="error-message">
+          <mat-icon>error_outline</mat-icon>
+          <span>{{ mensagemErro }}</span>
+        </div>
+
+        <button mat-flat-button color="primary" type="submit">
+  Cadastrar
+</button>
+        
+        <button mat-stroked-button type="button" (click)="voltar()">
+          Voltar para o Login
+        </button>
+      </form>
+    </mat-card-content>
+
+     <mat-card-footer class="login-footer">
+      <div class="footer-content">
+        <span class="version">Versão 1.0.0</span>
+        <span class="developer">Rafael Marques</span>
+      </div>
+    </mat-card-footer>
+  </mat-card>
+</div>
