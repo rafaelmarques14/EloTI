@@ -20,6 +20,11 @@
   padding: 0 20px;
 }
 
+.button-group {
+  display: flex;
+  align-items: center;
+}
+
 
 .table-container {
   background-color: #ffffff;
@@ -161,13 +166,14 @@ td.mat-column-acoes {
 
 
 .action-btn {
-  color: #64748b !important;
+  color: #000000 !important; /* Definido como preto */
   transform: scale(0.9);
-  transition: color 0.2s ease;
+  transition: opacity 0.2s ease; /* Transição alterada para opacidade */
 }
 
 .action-btn:hover {
-  color: #0f172a !important;
+  opacity: 0.6; /* Leve transparência ao passar o mouse para dar feedback visual */
+  color: #000000 !important;
 }
 
 .assign-select {
