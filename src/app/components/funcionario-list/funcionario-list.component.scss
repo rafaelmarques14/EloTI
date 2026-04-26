@@ -33,6 +33,11 @@ table {
   width: 100%;
 }
 
+.button-group {
+  display: flex;
+  align-items: center;
+}
+
 th.mat-mdc-header-cell {
   background-color: #f8fafc;
   color: #0f172a;
