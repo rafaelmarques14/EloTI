@@ -1,23 +1,42 @@
 <div class="header">
   <h2>Gestão de Itens</h2>
-  <div class="button-group">
+  
+  <div class="header-actions">
     
-    <input type="file" #fileInput (change)="importarExcel($event)" accept=".xlsx, .xls" style="display: none;">
+    <mat-form-field appearance="outline" subscriptSizing="dynamic" class="filtro-busca">
+      <mat-label>Buscar Tombamento</mat-label>
+      <mat-icon matPrefix style="color: #64748b; margin-right: 8px;">search</mat-icon>
+      <input matInput placeholder="Ex: DELL-001" (input)="onTombamentoChange($event)">
+    </mat-form-field>
 
-    <button mat-stroked-button color="accent" class="btn-exportar" (click)="fileInput.click()" style="margin-right: 8px; border-radius: 8px;">
-      <mat-icon>upload</mat-icon>
-      Importar Planilha
-    </button>
+    <mat-form-field appearance="outline" subscriptSizing="dynamic" class="filtro-status">
+      <mat-label>Filtrar Status</mat-label>
+      <mat-select [value]="statusFiltro" (selectionChange)="onFiltroChange($event.value)">
+        <mat-option value="Todos">Todos</mat-option>
+        <mat-option value="Livre">Livre</mat-option>
+        <mat-option value="Em uso">Em uso</mat-option>
+        <mat-option value="Manutenção">Manutenção</mat-option>
+      </mat-select>
+    </mat-form-field>
 
-    <button mat-stroked-button color="accent" class="btn-exportar" (click)="exportarExcel()" style="margin-right: 8px; border-radius: 8px;">
-      <mat-icon>download</mat-icon>
-      Exportar Planilha
-    </button>
+    <div class="button-group">
+      <input type="file" #fileInput (change)="importarExcel($event)" accept=".xlsx, .xls" style="display: none;">
 
-    <button mat-flat-button color="primary" class="btn-novo" (click)="openItemDialog()">
-      <mat-icon>add</mat-icon>
-      Novo Item
-    </button>
+      <button mat-stroked-button color="accent" class="btn-exportar" (click)="fileInput.click()" style="margin-right: 8px; border-radius: 8px;">
+        <mat-icon>upload</mat-icon>
+        Importar Planilha
+      </button>
+
+      <button mat-stroked-button color="accent" class="btn-exportar" (click)="exportarExcel()" style="margin-right: 8px; border-radius: 8px;">
+        <mat-icon>download</mat-icon>
+        Exportar Planilha
+      </button>
+
+      <button mat-flat-button color="primary" class="btn-novo" (click)="openItemDialog()">
+        <mat-icon>add</mat-icon>
+        Novo Item
+      </button>
+    </div>
   </div>
 </div>
 
