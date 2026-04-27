@@ -85,11 +85,47 @@ export class ItemDialogComponent implements OnInit, OnDestroy {
     const formData = this.form.value;
 
     if (this.isEditMode && this.data.item) {
-      const updatedItem: Item = { ...this.data.item, ...formData };
-      this.dataService.updateItem(updatedItem).subscribe(() => {
-        this.dialogRef.close(true);
-      });
+      const original = this.data.item;
+      const updatedItem: Item = { ...original, ...formData };
+
+      if (original.status !== 'Em uso' && formData.status === 'Em uso') {
+        this.dataService.updateItem(updatedItem).subscribe(() => {
+          this.dataService.atribuirItem(updatedItem.id, formData.funcionarioId).subscribe(() => {
+            this.dialogRef.close(true);
+          });
+        });
+      }
+
+      else if (original.status === 'Em uso' && formData.status === 'Em uso' && original.funcionarioId !== formData.funcionarioId) {
+
+        this.dataService.desatribuirItem(original).subscribe(() => {
+          this.dataService.updateItem(updatedItem).subscribe(() => {
+            // Cria histórico com o novo funcionário
+            this.dataService.atribuirItem(updatedItem.id, formData.funcionarioId).subscribe(() => {
+              this.dialogRef.close(true);
+            });
+          });
+        });
+      }
+
+      else if (original.status === 'Em uso' && formData.status !== 'Em uso') {
+        this.dataService.desatribuirItem(original).subscribe(() => {
+          updatedItem.historicoIdAtivo = null;
+          updatedItem.funcionarioId = null;
+          this.dataService.updateItem(updatedItem).subscribe(() => {
+            this.dialogRef.close(true);
+          });
+        });
+      }
+
+      else {
+        this.dataService.updateItem(updatedItem).subscribe(() => {
+          this.dialogRef.close(true);
+        });
+      }
+
     } else {
+
       const newItem = { ...formData };
       this.dataService.addItem(newItem).subscribe(() => {
         this.dialogRef.close(true);
@@ -107,4 +143,3 @@ export class ItemDialogComponent implements OnInit, OnDestroy {
     }
   }
 }
-
