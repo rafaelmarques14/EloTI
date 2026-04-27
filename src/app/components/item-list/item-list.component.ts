@@ -29,14 +29,19 @@ import * as XLSX from 'xlsx';
     MatFormFieldModule,
     MatSelectModule,
     MatAutocompleteModule, 
-    MatInputModule         
+    MatInputModule        
   ],
   templateUrl: './item-list.component.html',
   styleUrls: ['./item-list.component.css']
 })
 export class ItemListComponent implements OnInit {
   displayedColumns: string[] = ['item', 'tombamento', 'status', 'atribuidoPara', 'acoes'];
-  itens: Item[] = [];
+  
+  todosItens: Item[] = []; 
+  itens: Item[] = [];      
+  
+  statusFiltro: string = 'Todos';
+  tombamentoFiltro: string = '';
   
   funcionarios: Funcionario[] = [];
   funcionariosFiltrados: Funcionario[] = [];
@@ -59,12 +64,41 @@ export class ItemListComponent implements OnInit {
 
   carregarItens(): void {
     this.dataService.getItensState().subscribe(dataItens => {
-      this.itens = dataItens;
+      this.todosItens = dataItens;
+      this.aplicarFiltros();
     });
   }
 
-  resetarFiltro(): void {
+  onFiltroChange(novoStatus: string): void {
+    this.statusFiltro = novoStatus;
+    this.aplicarFiltros();
+  }
 
+  onTombamentoChange(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    this.tombamentoFiltro = input.value;
+    this.aplicarFiltros();
+  }
+
+  aplicarFiltros(): void {
+    let filtrados = [...this.todosItens];
+
+    if (this.statusFiltro !== 'Todos') {
+      filtrados = filtrados.filter(item => item.status === this.statusFiltro);
+    }
+
+    if (this.tombamentoFiltro.trim() !== '') {
+      const termoBusca = this.tombamentoFiltro.toLowerCase().trim();
+      filtrados = filtrados.filter(item => 
+        item.numeroDeTombamento.toLowerCase().includes(termoBusca)
+      );
+    }
+
+    this.itens = filtrados;
+  }
+
+
+  resetarFiltro(): void {
     this.funcionariosFiltrados = [...this.funcionarios];
   }
 
@@ -76,7 +110,6 @@ export class ItemListComponent implements OnInit {
   }
 
   displayFuncionario(id: any): string {
-
     return id ? (this.funcionarioMap.get(id) || '') : '';
   }
 
@@ -106,7 +139,6 @@ export class ItemListComponent implements OnInit {
   onFuncionarioSelect(item: Item, funcionarioId: any): void {
     if (funcionarioId) {
       this.dataService.atribuirItem(item.id, funcionarioId).subscribe(() => {
-
         this.carregarItens();
       });
     }
@@ -143,7 +175,7 @@ export class ItemListComponent implements OnInit {
   }
 
   exportarExcel(): void {
-    const dadosParaExportar = this.itens.map(item => ({
+    const dadosParaExportar = this.todosItens.map(item => ({
       'Equipamento': item.nomeDoItem,
       'Marca': item.marca,
       'Modelo': item.modelo,
@@ -170,16 +202,14 @@ export class ItemListComponent implements OnInit {
       try {
         const dataArray = new Uint8Array(e.target.result);
         const wb: XLSX.WorkBook = XLSX.read(dataArray, { type: 'array' });
-
         const wsname: string = wb.SheetNames[0];
         const ws: XLSX.WorkSheet = wb.Sheets[wsname];
-
         const data = XLSX.utils.sheet_to_json(ws, { raw: false });
 
         let importados = 0;
         let ignorados = 0;
 
-        const tombamentosRegistrados = new Set(this.itens.map(i => i.numeroDeTombamento));
+        const tombamentosRegistrados = new Set(this.todosItens.map(i => i.numeroDeTombamento));
 
         data.forEach((row: any) => {
           const nomeLido = row['Monitor AOC'] || row['Equipamento'] || row['Item'] || row['Nome'];
@@ -195,9 +225,7 @@ export class ItemListComponent implements OnInit {
             if (tombamentosRegistrados.has(tombamentoLimpo)) {
               ignorados++;
             } else {
-
               tombamentosRegistrados.add(tombamentoLimpo);
-
               const statusFinal = (statusLido === 'Em uso' || statusLido === 'Manutenção') ? statusLido : 'Livre';
 
               let funcionarioIdEncontrado: any = null;
