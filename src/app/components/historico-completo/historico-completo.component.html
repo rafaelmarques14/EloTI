@@ -1,83 +1,85 @@
 <div class="header">
-  <h2>Histórico de Atividades</h2>
+  <h2>Histórico Completo</h2>
   <button mat-flat-button color="primary" class="btn-novo" (click)="gerarPDF()">
     <mat-icon>picture_as_pdf</mat-icon>
-    Exportar em PDF
+    Exportar PDF
   </button>
 </div>
 
 <div class="filter-bar" [formGroup]="filterForm">
+  
   <mat-form-field appearance="outline">
     <mat-label>Filtrar por Funcionário</mat-label>
-    <mat-select formControlName="funcionarioId">
-      <mat-option [value]="null">Todos os registros</mat-option>
-      <mat-option *ngFor="let func of funcionarios" [value]="func.id">
+    <mat-icon matPrefix style="color: #64748b; margin-right: 8px;">person</mat-icon>
+    <input type="text"
+           matInput
+           placeholder="Buscar nome..."
+           formControlName="funcionarioId"
+           [matAutocomplete]="autoFunc"
+           (focus)="resetarFiltroFuncionario()"
+           (input)="filtrarFuncionariosAutocomplete($event)">
+           
+    <mat-autocomplete #autoFunc="matAutocomplete" [displayWith]="displayFuncionario.bind(this)">
+      <mat-option *ngFor="let func of funcionariosFiltrados" [value]="func.id">
         {{ func.nome }}
       </mat-option>
-    </mat-select>
+    </mat-autocomplete>
   </mat-form-field>
-  
+
   <mat-form-field appearance="outline" class="filter-type-select">
-    <mat-label>Tipo de Data</mat-label>
+    <mat-label>Tipo de Filtro</mat-label>
     <mat-select formControlName="filterType">
-      <mat-option value="day">Dia</mat-option>
-      <mat-option value="month">Mês</mat-option>
-      <mat-option value="year">Ano</mat-option>
+      <mat-option value="day">Dia Específico</mat-option>
+      <mat-option value="month">Mês Específico</mat-option>
+      <mat-option value="year">Ano Específico</mat-option>
     </mat-select>
   </mat-form-field>
 
   <mat-form-field appearance="outline">
-    <mat-label>Filtrar por Data</mat-label>
-    <input matInput [matDatepicker]="picker" formControlName="data" placeholder="Selecione uma data...">
-    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-label>Escolher Data</mat-label>
+    <input matInput [matDatepicker]="picker" formControlName="data">
+    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
     <mat-datepicker #picker 
-                  [startView]="datepickerStartView"
-                  (monthSelected)="monthSelectedHandler($event, picker)"
-                  (yearSelected)="yearSelectedHandler($event, picker)">
+                    [startView]="datepickerStartView"
+                    (monthSelected)="monthSelectedHandler($event, picker)"
+                    (yearSelected)="yearSelectedHandler($event, picker)">
     </mat-datepicker>
   </mat-form-field>
 
-  <button mat-stroked-button (click)="limparFiltros()" class="btn-limpar">
+  <button mat-stroked-button class="btn-limpar" (click)="limparFiltros()">
     Limpar Filtros
   </button>
 </div>
 
 <div class="table-container">
   <table mat-table [dataSource]="historicoFiltrado$">
-    
+
     <ng-container matColumnDef="item">
-      <th mat-header-cell *matHeaderCellDef> Item </th>
-      <td mat-cell *matCellDef="let element"> 
-        <strong class="item-title">{{element.nomeItem}}</strong> 
-      </td>
+      <th mat-header-cell *matHeaderCellDef> Equipamento </th>
+      <td mat-cell *matCellDef="let h" class="item-title"> {{ h.nomeItem }} </td>
     </ng-container>
-    
+
     <ng-container matColumnDef="funcionario">
-      <th mat-header-cell *matHeaderCellDef> Atribuído para </th>
-      <td mat-cell *matCellDef="let element" class="item-subtitle"> 
-        {{element.nomeFuncionario}} 
-      </td>
+      <th mat-header-cell *matHeaderCellDef> Atribuído Para </th>
+      <td mat-cell *matCellDef="let h" class="item-subtitle"> {{ h.nomeFuncionario }} </td>
     </ng-container>
-    
+
     <ng-container matColumnDef="dataInicio">
-      <th mat-header-cell *matHeaderCellDef> Data de Atribuição </th>
-      <td mat-cell *matCellDef="let element" class="text-muted"> 
-        {{element.dataInicio | date:'dd/MM/yyyy'}} 
+      <th mat-header-cell *matHeaderCellDef> Data de Retirada </th>
+      <td mat-cell *matCellDef="let h" class="text-muted"> {{ h.dataInicio | date:'dd/MM/yyyy' }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="dataFim">
+      <th mat-header-cell *matHeaderCellDef> Data de Devolução </th>
+      <td mat-cell *matCellDef="let h">
+        <span *ngIf="h.dataFim" class="text-muted">{{ h.dataFim | date:'dd/MM/yyyy' }}</span>
+        
+        <span *ngIf="!h.dataFim" class="status-text-only" style="color: #3b82f6;">
+          <mat-icon>person_pin</mat-icon>
+          Em uso
+        </span>
       </td>
     </ng-container>
-    
-    <ng-container matColumnDef="dataFim">
-  <th mat-header-cell *matHeaderCellDef> Data de Devolução </th>
-  <td mat-cell *matCellDef="let element"> 
-    <span *ngIf="element.dataFim" class="text-muted">
-      {{ element.dataFim | date:'dd/MM/yyyy' }}
-    </span>
-    
-    <div *ngIf="!element.dataFim" class="status-text-only">
-      <span>Em uso</span>
-    </div>
-  </td>
-</ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="hover-row"></tr>
