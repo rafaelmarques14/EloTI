@@ -9,12 +9,12 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDatepicker, MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
+import { MatAutocompleteModule } from '@angular/material/autocomplete'; 
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { forkJoin, map, Subject, BehaviorSubject, takeUntil, startWith } from 'rxjs';
 import { DataService } from '../../services/data.service';
 import { Funcionario } from '../../models/funcionario.model';
-import { Historico, HistoricoFormatado } from '../../models/historico.model';
-
+import { HistoricoFormatado } from '../../models/historico.model';
 
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
@@ -24,7 +24,8 @@ import autoTable from 'jspdf-autotable';
   standalone: true,
   imports: [
     CommonModule, ReactiveFormsModule, MatTableModule, MatButtonModule,
-    MatIconModule, MatFormFieldModule, MatSelectModule, MatDatepickerModule, MatInputModule
+    MatIconModule, MatFormFieldModule, MatSelectModule, MatDatepickerModule, 
+    MatInputModule, MatAutocompleteModule 
   ],
   providers: [provideNativeDateAdapter()],
   templateUrl: './historico-completo.component.html',
@@ -34,6 +35,8 @@ export class HistoricoCompletoComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = ['item', 'funcionario', 'dataInicio', 'dataFim'];
   
   funcionarios: Funcionario[] = [];
+  funcionariosFiltrados: Funcionario[] = []; // NOVO: Lista para o autocomplete
+  
   private historicoCompleto: HistoricoFormatado[] = [];
   historicoFiltrado$ = new BehaviorSubject<HistoricoFormatado[]>([]);
   
@@ -98,6 +101,8 @@ export class HistoricoCompletoComponent implements OnInit, OnDestroy {
     }).pipe(
       map(({ historico, itens, funcionarios }) => {
         this.funcionarios = funcionarios;
+        this.funcionariosFiltrados = funcionarios; 
+        
         const itemMap = new Map(itens.map(i => [i.id, i.nomeDoItem]));
         const funcMap = new Map(funcionarios.map(f => [f.id, f.nome]));
 
@@ -121,6 +126,23 @@ export class HistoricoCompletoComponent implements OnInit, OnDestroy {
       this.historicoCompleto = data;
       this.aplicarFiltros();
     });
+  }
+
+  resetarFiltroFuncionario(): void {
+    this.funcionariosFiltrados = [...this.funcionarios];
+  }
+
+  filtrarFuncionariosAutocomplete(event: Event): void {
+    const valorDigitado = (event.target as HTMLInputElement).value.toLowerCase();
+    this.funcionariosFiltrados = this.funcionarios.filter(f =>
+      f.nome.toLowerCase().includes(valorDigitado)
+    );
+  }
+
+  displayFuncionario(id: any): string {
+    if (!id) return '';
+    const func = this.funcionarios.find(f => f.id === id);
+    return func ? func.nome : '';
   }
 
   private aplicarFiltros(): void {
@@ -167,6 +189,7 @@ export class HistoricoCompletoComponent implements OnInit, OnDestroy {
       funcionarioId: null, 
       data: null 
     });
+    this.resetarFiltroFuncionario();
   }
 
   gerarPDF(): void {
@@ -197,4 +220,3 @@ export class HistoricoCompletoComponent implements OnInit, OnDestroy {
     doc.save('historico-elo_ti.pdf');
   }
 }
-
